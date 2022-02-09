@@ -1,15 +1,22 @@
 import styles from "../styles/VendingMachine.module.scss";
 import Head from 'next/head';
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useState } from "react";
 import Web3 from 'web3';
 
 const VendingMachine = () => {
+  const [error, setError] = useState('')
   let web3;
-  const connectWalletHandler = () => {
+  const connectWalletHandler = async () => {
     if (typeof window !== undefined && typeof window.ethereum !== undefined) {
-      window.ethereum.request({ method: "eth_requestAccounts" });
-      web3 = new Web3(window.ethereum)
-      console.log(web3);
+      try {
+        await window.ethereum.request({ method: "eth_requestAccounts" });
+        web3 = new Web3(window.ethereum)
+        console.log(web3);
+        setError('')
+      } catch (error) {
+        setError(error.message);
+      }
     } else {
       console.error("Please install Meta Mask")
     }
@@ -30,7 +37,7 @@ const VendingMachine = () => {
     </nav>
     <section>
       <div className="container">
-
+        {error && <div className="alert alert-danger mt-2">{error}</div>}
       </div>
     </section>
   </>
