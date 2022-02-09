@@ -18,7 +18,7 @@ contract("VendingMachine", accounts => {
     })
 
     it("allows donuts to be purchased", async () => {
-        await instance.purchase(5, { from: accounts[0], value: web3.utils.toWei('10', 'ether') });
+        await instance.purchase(5, { from: accounts[0], value: 5 * 100 });
         let balance = await instance.getVendingMachineBalance();
         assert.equal(balance, 295, "The balance should ne equal to 295.")
     })
